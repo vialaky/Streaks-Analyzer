@@ -1,3 +1,4 @@
+import itertools
 import sys
 from collections import defaultdict, OrderedDict
 import json
@@ -45,10 +46,25 @@ def read_data():
 
 teams_data = read_data()
 
+series = []
+
 for k, v in teams_data.items():
-    teamchain_dict = OrderedDict(sorted(v.items(), key=lambda x: datetime.strptime(x[0], '%Y-%m-%d'), reverse=False))
+    teamchain_dict = OrderedDict(
+        sorted(v.items(), key=lambda x: datetime.strptime(x[0], '%Y-%m-%d'), reverse=False))
     teamchain_ls = [value for value in teamchain_dict.values()]
-    print(k, teamchain_ls)
+    # print(k)
+    for item, group in itertools.groupby(teamchain_ls):
+        seria = len(list(group))
+
+        if seria > 2:
+            # print(f'{item} - {seria}')
+            series.append((item, seria))
+
+    # print(series)
+
+    # print()
+    # print(k, teamchain_ls)
+
     # sys.exit()
 
 # print(cnt)
@@ -57,3 +73,6 @@ for k, v in teams_data.items():
 # ordered_data = sorted(match_result.items(), key = lambda x:datetime.strptime(x[0], '%Y-%m-%d'), reverse=True)
 
 # pp.pprint(ordered_data)
+
+print(series)
+
