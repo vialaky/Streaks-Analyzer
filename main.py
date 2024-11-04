@@ -6,17 +6,41 @@ from datetime import datetime
 
 pp = pprint.PrettyPrinter(indent=4)
 
-paths = [
-    'football.json-master/2010-11/at.1.json',
-    'football.json-master/2010-11/at.2.json',
-    'football.json-master/2010-11/de.1.json',
-    'football.json-master/2010-11/en.1.json',
-    'football.json-master/2010-11/en.2.json',
-    'football.json-master/2010-11/en.3.json',
-    'football.json-master/2010-11/en.4.json',
+folders = [
+    'football.json-master/2010-11/',
+    'football.json-master/2011-12/',
+    'football.json-master/2012-13/',
+    # 'football.json-master/2010-11/en.1.json',
+    # 'football.json-master/2010-11/en.2.json',
+    # 'football.json-master/2010-11/en.3.json',
+    # 'football.json-master/2010-11/en.4.json',
 
 ]
 
+files = [
+    'at.1.json',
+    'at.2.json',
+    'de.1.json',
+    'de.2.json',
+    'en.1.json',
+    'en.2.json',
+    'en.3.json',
+    'en.4.json',
+    'es.1.json',
+    'es.2.json',
+]
+
+
+# paths = [
+#     'football.json-master/2010-11/at.1.json',
+#     'football.json-master/2010-11/at.2.json',
+#     'football.json-master/2010-11/de.1.json',
+#     'football.json-master/2010-11/en.1.json',
+#     'football.json-master/2010-11/en.2.json',
+#     'football.json-master/2010-11/en.3.json',
+#     'football.json-master/2010-11/en.4.json',
+#
+# ]
 
 match_result = defaultdict(dict)
 
@@ -53,11 +77,14 @@ def read_data(file_path):
     return match_result
 
 
-for path in paths:
-    teams_data = read_data(path)
+for folder in folders:
+    for file in files:
+        try:
+            teams_data = read_data(folder + file)
+        except FileNotFoundError:
+            pass
 
 series = []
-
 
 for k, v in teams_data.items():
     teamchain_dict = OrderedDict(
@@ -87,22 +114,20 @@ for item in series:
         try:
             streaks_count[result][val] += 1
         except KeyError:
-            # pass
             streaks_count[result][val] = 1
 
         if val < item[1]:
-            #     streaks_success[result][val] = 0
-            # else:
+
             try:
                 streaks_success[result][val] += 1
             except KeyError:
                 streaks_success[result][val] = 1
 
         try:
-            streaks[result][val] = f'{round(streaks_success[result][val] / streaks_count[result][val] * 100)}%'
+            streaks[result][
+                val] = f'{round(streaks_success[result][val] / streaks_count[result][val] * 100)}% for {streaks_count[result][val]}'
         except KeyError:
             streaks[result][val] = 0
-
 
         val -= 1
 
@@ -113,7 +138,6 @@ print('Success:')
 pp.pprint(streaks_success)
 print('================')
 print('================')
-
 
 print('Summary:')
 pp.pprint(streaks)
