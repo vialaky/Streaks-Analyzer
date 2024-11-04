@@ -12,15 +12,18 @@ folders = [
     'football.json-master/2012-13/',
     'football.json-master/2013-14/',
     'football.json-master/2014-15/',
-    # 'football.json-master/2010-11/en.3.json',
-    # 'football.json-master/2010-11/en.4.json',
+    'football.json-master/2015-16/',
+    'football.json-master/2016-17/',
+    'football.json-master/2017-18/',
+    # 'football.json-master/2018-19/',
+    # 'football.json-master/2019-20/',
 
 ]
 
 files = [
     'at.1.json',
     'at.2.json',
-    'ch.1.json',
+    # 'ch.1.json',
     'de.1.json',
     'de.2.json',
     'de.3.json',
