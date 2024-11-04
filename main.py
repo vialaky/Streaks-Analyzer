@@ -54,11 +54,11 @@ for k, v in teams_data.items():
     teamchain_ls = [value for value in teamchain_dict.values()]
     # print(k)
     for item, group in itertools.groupby(teamchain_ls):
-        seria = len(list(group))
+        streak = len(list(group))
 
-        if seria > 2:
+        if streak > 2:
             # print(f'{item} - {seria}')
-            series.append((item, seria))
+            series.append((item, streak))
 
     # print(series)
 
@@ -74,5 +74,66 @@ for k, v in teams_data.items():
 
 # pp.pprint(ordered_data)
 
-print(series)
+# print(series)
 
+
+streaks_count = defaultdict(dict)
+streaks_success = defaultdict(dict)
+streaks = defaultdict(dict)
+# win = defaultdict(dict)
+# lose = defaultdict(dict)
+
+for item in series:
+    print(item)
+    result = item[0]
+    val = item[1]
+
+    while 3 <= val <= item[1]:
+        # print(val)
+
+        try:
+            streaks_count[result][val] += 1
+        except KeyError:
+            # pass
+            streaks_count[result][val] = 1
+
+        if val < item[1]:
+        #     streaks_success[result][val] = 0
+        # else:
+            try:
+                streaks_success[result][val] += 1
+            except KeyError:
+                streaks_success[result][val] = 1
+
+        try:
+            streaks[result][val] = f'{round(streaks_success[result][val] / streaks_count[result][val] * 100)}%'
+        except KeyError:
+            streaks[result][val] = 0
+        # try:
+        #     streaks_count[result][val]['success'] += 1
+        #
+        # except KeyError as e:
+        #     # print(e)
+        #     streaks_count[result][val]['success'] = 1
+
+        # try:
+        #     streaks_count[result][val]['cnt'] += 1
+        # except KeyError:
+        #     streaks_count[result][val]['cnt'] = 1
+
+        val -= 1
+
+print('Count:')
+pp.pprint(streaks_count)
+print('================')
+print('Success:')
+pp.pprint(streaks_success)
+print('================')
+print('================')
+#
+# for k in streaks_count.keys():
+#     streaks[]
+
+print('Summary:')
+pp.pprint(streaks)
+print(f'Total streaks: {len(series)}')
